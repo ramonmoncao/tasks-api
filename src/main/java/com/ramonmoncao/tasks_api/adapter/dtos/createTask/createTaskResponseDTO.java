@@ -1,4 +1,4 @@
-package com.ramonmoncao.tasks_api.adapter.dtos.updateState;
+package com.ramonmoncao.tasks_api.adapter.dtos.createTask;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,11 +8,12 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class updateStateResponse{
+public class createTaskResponseDTO {
     private UUID id;
     private String title;
     private boolean done;
