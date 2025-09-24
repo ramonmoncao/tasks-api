@@ -1,4 +1,4 @@
-package com.ramonmoncao.tasks_api.adapter.dtos.createTask;
+package com.ramonmoncao.tasks_api.service.dtos.createTask;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,14 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class createTaskRequestDTO {
+public class CreateTaskRequestDTO {
     private String title;
     private boolean done;
     private LocalDateTime createdAt;

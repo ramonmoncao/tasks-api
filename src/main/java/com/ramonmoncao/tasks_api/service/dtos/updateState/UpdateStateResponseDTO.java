@@ -1,4 +1,4 @@
-package com.ramonmoncao.tasks_api.adapter.dtos.updateState;
+package com.ramonmoncao.tasks_api.service.dtos.updateState;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class updateStateResponseDTO {
+public class UpdateStateResponseDTO {
     private UUID id;
     private String title;
     private boolean done;

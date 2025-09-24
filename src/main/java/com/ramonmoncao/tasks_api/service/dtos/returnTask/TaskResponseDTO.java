@@ -1,4 +1,4 @@
-package com.ramonmoncao.tasks_api.adapter.dtos.returnTask;
+package com.ramonmoncao.tasks_api.service.dtos.returnTask;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
