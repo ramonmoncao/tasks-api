@@ -9,6 +9,7 @@ import com.ramonmoncao.tasks_api.port.TaskRepository;
 import com.ramonmoncao.tasks_api.port.dtos.createTask.CreateTaskRequestDTO;
 import com.ramonmoncao.tasks_api.port.dtos.createTask.CreateTaskResponseDTO;
 import com.ramonmoncao.tasks_api.port.dtos.returnTask.TaskResponseDTO;
+import com.ramonmoncao.tasks_api.port.dtos.updateState.UpdateStateResponseDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -95,9 +96,30 @@ public class TaskServiceImplTests {
 
         assertThrows(NotFoundException.class, () -> taskService.updateState(id));
     }
+    @Test
+    void ShouldUpdateState() {
+
+        UUID taskId = UUID.randomUUID();
+        Task task = new Task();
+        task.setId(taskId);
+        task.setTitle("Test Task");
+        task.setDone(false);
+
+        UpdateStateResponseDTO responseDTO = new UpdateStateResponseDTO();
+
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(task));
+        when(taskMapper.toUpdateStateDTO(task)).thenReturn(responseDTO);
+
+        UpdateStateResponseDTO result = taskService.updateState(taskId);
+
+        assertEquals(responseDTO, result);
+        assertTrue(task.isDone());
+        verify(taskRepository).findById(taskId);
+        verify(taskMapper).toUpdateStateDTO(task);
+    }
 
     @Test
-    void findAll_shouldReturnListOfDTOs() {
+    void shouldReturnAll() {
         Task task1 = new Task();
         Task task2 = new Task();
 
