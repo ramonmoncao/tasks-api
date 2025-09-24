@@ -1,4 +1,4 @@
-package com.ramonmoncao.tasks_api.adapter.dtos.createTask;
+package com.ramonmoncao.tasks_api.port.dtos.createTask;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class createTaskResponseDTO {
+public class CreateTaskResponseDTO {
     private UUID id;
     private String title;
     private boolean done;
