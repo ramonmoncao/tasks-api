@@ -82,7 +82,7 @@ class TaskServiceImplTest {
         CreateTaskException ex = assertThrows(CreateTaskException.class, () ->
                 taskService.createTask(requestDTO)
         );
-        assertEquals("Título não pode ser nulo.", ex.getMessage());
+        assertEquals("Título não pode ser vazio.", ex.getMessage());
     }
 
     @Test
