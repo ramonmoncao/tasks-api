@@ -1,4 +1,4 @@
-package com.ramonmoncao.tasks_api.port;
+package com.ramonmoncao.tasks_api.port.input;
 
 import com.ramonmoncao.tasks_api.domain.model.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
