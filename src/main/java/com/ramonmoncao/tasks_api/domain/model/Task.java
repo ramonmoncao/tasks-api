@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -23,7 +24,8 @@ public class Task {
     @Column(nullable = false, length = 100)
     private String title;
     @Column(nullable = false)
-    private boolean done;
+    private boolean done = false;
+    @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
