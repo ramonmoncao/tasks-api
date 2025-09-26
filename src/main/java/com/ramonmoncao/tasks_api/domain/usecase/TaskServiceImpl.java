@@ -1,11 +1,11 @@
-package com.ramonmoncao.tasks_api.service;
+package com.ramonmoncao.tasks_api.domain.usecase;
 
 import com.ramonmoncao.tasks_api.domain.exception.CreateTaskException;
 import com.ramonmoncao.tasks_api.domain.exception.NotFoundException;
 import com.ramonmoncao.tasks_api.domain.mapper.TaskMapper;
 import com.ramonmoncao.tasks_api.domain.model.Task;
-import com.ramonmoncao.tasks_api.port.TaskRepository;
-import com.ramonmoncao.tasks_api.port.TaskService;
+import com.ramonmoncao.tasks_api.port.input.TaskRepository;
+import com.ramonmoncao.tasks_api.port.input.TaskService;
 import com.ramonmoncao.tasks_api.port.dtos.createTask.CreateTaskRequestDTO;
 import com.ramonmoncao.tasks_api.port.dtos.createTask.CreateTaskResponseDTO;
 import com.ramonmoncao.tasks_api.port.dtos.returnTask.TaskResponseDTO;
@@ -31,7 +31,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public CreateTaskResponseDTO createTask(CreateTaskRequestDTO createTaskRequestDTO) {
         if(createTaskRequestDTO.getTitle()==null || createTaskRequestDTO.getTitle().isBlank())
-            throw new CreateTaskException("Título não pode ser nulo.");
+            throw new CreateTaskException("Título não pode ser vazio.");
         try {
             Task task = taskMapper.toEntity(createTaskRequestDTO);
             task = taskRepository.save(task);
@@ -45,7 +45,8 @@ public class TaskServiceImpl implements TaskService {
     public UpdateStateResponseDTO updateState(UUID id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(()-> new NotFoundException(id));
-        task.setDone(true);
+        task.setDone(!task.isDone());
+        taskRepository.save(task);
         return  taskMapper.toUpdateStateDTO(task);
     }
 

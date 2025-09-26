@@ -1,11 +1,10 @@
-package com.ramonmoncao.tasks_api.service;
-
+package com.ramonmoncao.tasks_api.domain.usecase;
 
 import com.ramonmoncao.tasks_api.domain.exception.CreateTaskException;
 import com.ramonmoncao.tasks_api.domain.exception.NotFoundException;
 import com.ramonmoncao.tasks_api.domain.mapper.TaskMapper;
 import com.ramonmoncao.tasks_api.domain.model.Task;
-import com.ramonmoncao.tasks_api.port.TaskRepository;
+import com.ramonmoncao.tasks_api.port.input.TaskRepository;
 import com.ramonmoncao.tasks_api.port.dtos.createTask.CreateTaskRequestDTO;
 import com.ramonmoncao.tasks_api.port.dtos.createTask.CreateTaskResponseDTO;
 import com.ramonmoncao.tasks_api.port.dtos.returnTask.TaskResponseDTO;
@@ -17,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -28,10 +26,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
 @ExtendWith(MockitoExtension.class)
-public class TaskServiceImplTests {
-
+class TaskServiceImplTest {
     @Mock
     private TaskRepository taskRepository;
     @Mock
