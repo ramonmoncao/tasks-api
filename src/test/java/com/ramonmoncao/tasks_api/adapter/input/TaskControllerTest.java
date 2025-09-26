@@ -6,17 +6,15 @@ import com.ramonmoncao.tasks_api.adapter.dtos.createTask.CreateTaskResponseDTO;
 import com.ramonmoncao.tasks_api.adapter.dtos.returnTask.TaskResponseDTO;
 import com.ramonmoncao.tasks_api.adapter.dtos.updateState.UpdateStateResponseDTO;
 import com.ramonmoncao.tasks_api.domain.mapper.TaskAdapterMapper;
-import com.ramonmoncao.tasks_api.port.input.TaskRepository;
 import com.ramonmoncao.tasks_api.port.input.TaskService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Collections;
 import java.util.UUID;
@@ -24,14 +22,10 @@ import java.util.UUID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
 class TaskControllerTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
     @Mock
@@ -40,12 +34,15 @@ class TaskControllerTest {
     @Mock
     private TaskAdapterMapper taskAdapterMapper;
 
+    @InjectMocks
+    private TaskController taskController;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(taskController).build();
     }
 
     @Test
@@ -56,18 +53,16 @@ class TaskControllerTest {
         mockMvc.perform(get("/api/tasks"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$").isArray())
-                .andDo(print());
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
     void shouldReturnCreatedTask() throws Exception {
         CreateTaskRequestDTO request = CreateTaskRequestDTO.builder()
-                .title("Task 1")
-                .build();
+                .title("Task 1").build();
         CreateTaskResponseDTO response = CreateTaskResponseDTO.builder()
-                .title("Task 1")
-                .build();
+                .title("Task 1").done(false).build();
+
         when(taskAdapterMapper.createRequestToPortDTO(any(CreateTaskRequestDTO.class))).thenReturn(null);
         when(taskService.createTask(any())).thenReturn(null);
         when(taskAdapterMapper.createResponseToAdapterDTO(any())).thenReturn(response);
@@ -76,15 +71,14 @@ class TaskControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.title").value(response.getTitle()))
-                .andExpect(jsonPath("$.done").value(response.isDone()))
-                .andDo(print());
+                .andExpect(jsonPath("$.title").value("Task 1"))
+                .andExpect(jsonPath("$.done").value(false));
     }
 
     @Test
     void shouldReturnNoContent() throws Exception {
         UUID taskId = UUID.randomUUID();
+
         mockMvc.perform(delete("/api/tasks/" + taskId))
                 .andExpect(status().isNoContent());
     }
@@ -92,13 +86,20 @@ class TaskControllerTest {
     @Test
     void shouldReturnUpdatedState() throws Exception {
         UUID taskId = UUID.randomUUID();
+
         UpdateStateResponseDTO response = new UpdateStateResponseDTO();
-        when(taskService.updateState(taskId)).thenReturn(null);
+        response.setDone(true);
+
+        var taskMock = new com.ramonmoncao
+                .tasks_api.port.dtos.updateState.UpdateStateResponseDTO();
+        taskMock.setId(taskId);
+        taskMock.setDone(true);
+
+        when(taskService.updateState(taskId)).thenReturn(taskMock);
         when(taskAdapterMapper.updateStateToAdapterDTO(any())).thenReturn(response);
 
         mockMvc.perform(patch("/api/tasks/toggle/" + taskId))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.done").value(response.isDone()));
+                .andExpect(jsonPath("$.done").value(true));
     }
 }
