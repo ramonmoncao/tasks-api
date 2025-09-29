@@ -9,6 +9,7 @@ import com.ramonmoncao.tasks_api.port.dtos.createTask.CreateTaskRequestDTO;
 import com.ramonmoncao.tasks_api.port.dtos.createTask.CreateTaskResponseDTO;
 import com.ramonmoncao.tasks_api.port.dtos.returnTask.TaskResponseDTO;
 import com.ramonmoncao.tasks_api.port.dtos.updateState.UpdateStateResponseDTO;
+import com.ramonmoncao.tasks_api.utils.DataUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,7 +47,7 @@ class TaskServiceImplTest {
         UUID id = UUID.randomUUID();
         String title = "Test Task";
         boolean done = false;
-        LocalDateTime now = LocalDateTime.now();
+        String now = DataUtils.getFormatterDateTimeNow();
 
         CreateTaskRequestDTO requestDTO = new CreateTaskRequestDTO();
         requestDTO.setTitle(title);
@@ -54,7 +55,6 @@ class TaskServiceImplTest {
         Task task = new Task();
         task.setTitle(title);
         task.setDone(done);
-        task.setCreatedAt(now);
         task.setId(id);
 
         CreateTaskResponseDTO responseDTO = new CreateTaskResponseDTO(id, title, done, now);
@@ -82,7 +82,7 @@ class TaskServiceImplTest {
         CreateTaskException ex = assertThrows(CreateTaskException.class, () ->
                 taskService.createTask(requestDTO)
         );
-        assertEquals("Título não pode ser nulo.", ex.getMessage());
+        assertEquals("Título não pode ser vazio.", ex.getMessage());
     }
 
     @Test

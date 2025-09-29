@@ -17,5 +17,5 @@ public class CreateTaskResponseDTO {
     private UUID id;
     private String title;
     private boolean done;
-    private LocalDateTime createdAt;
+    private String createdAt;
 }
