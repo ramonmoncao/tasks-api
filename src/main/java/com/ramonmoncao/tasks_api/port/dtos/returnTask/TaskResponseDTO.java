@@ -1,9 +1,6 @@
 package com.ramonmoncao.tasks_api.port.dtos.returnTask;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -13,9 +10,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class TaskResponseDTO {
     private UUID id;
     private String title;
     private boolean done;
-    private LocalDateTime createdAt;
+    private String createdAt;
 }
